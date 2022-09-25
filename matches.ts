@@ -1,0 +1,100 @@
+import { envThrow } from './utils.ts'
+
+const url = 'https://api-football-v1.p.rapidapi.com/v3'
+const headers = {
+  'X-RapidAPI-Key': envThrow('MATCHES_API_KEY'),
+  'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+}
+
+const query = (obj: Record<string, string | number>) =>
+  '?' +
+  Object.entries(obj)
+    .map(([k, v]) => `${k}=${v}`)
+    .join('&')
+
+const date = (d: Date) => {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const date = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${date}`
+}
+
+const today = () => date(new Date())
+
+type ApiFixture = {
+  fixture: {
+    id: number
+    date: string
+    venue: {
+      name: string
+      id: number
+    }
+  }
+  teams: {
+    home: { name: string }
+    away: { name: string }
+  }
+}
+
+export type Fixture = {
+  id: number
+  date: string
+  venue: string
+  teams: string
+}
+const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
+  id: fixture.id,
+  date: fixture.date,
+  // venue: `${fixture.venue.name}(${fixture.venue.id})`,
+  venue: fixture.venue.name,
+  teams: teams.home.name + ' - ' + teams.away.name
+})
+
+const getFixtures = async (
+  league: Record<string, string | number>
+): Promise<Fixture[]> => {
+  const params = { ...league, date: today() }
+  const res = await fetch(`${url}/fixtures${query(params)}`, {
+    headers
+  })
+  const fixtures = await res.json()
+
+  return fixtures.response.map(trimFixture)
+}
+
+type ApiLeague = {
+  league: {
+    id: number
+  }
+  seasons: {
+    current: boolean
+    year: number
+  }[]
+}
+
+type League = {
+  league: number
+  season: number
+}
+const trimLeague = (league: ApiLeague): League => ({
+  league: league.league.id,
+  season: league.seasons.find(s => s.current)!.year
+})
+
+const getLeagues = async (): Promise<League[]> => {
+  const params = {
+    country: 'Bulgaria'
+  }
+  const res = await fetch(`${url}/leagues${query(params)}`, {
+    headers
+  })
+  const leagues = (await res.json()).response.map(trimLeague)
+  return leagues
+}
+
+export const findMatches = async () => {
+  const leagues = await getLeagues()
+  const fixtures = await Promise.all(leagues.map(getFixtures))
+  // console.log(JSON.stringify(fixtures.flat(), null, 2))
+  return fixtures.flat()
+}

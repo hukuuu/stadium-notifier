@@ -1,0 +1,68 @@
+{
+  "fixture": {
+    "id": 941499,
+    "referee": null,
+    "timezone": "UTC",
+    "date": "2022-09-25T13:00:00+00:00",
+    "timestamp": 1664110800,
+    "periods": {
+      "first": null,
+      "second": null
+    },
+    "venue": {
+      "id": 1847,
+      "name": "Sporten tsentar Ludogorets",
+      "city": "Razgrad"
+    },
+    "status": {
+      "long": "Not Started",
+      "short": "NS",
+      "elapsed": null
+    }
+  },
+  "league": {
+    "id": 175,
+    "name": "Third League - Northeast",
+    "country": "Bulgaria",
+    "logo": "https://media.api-sports.io/football/leagues/175.png",
+    "flag": "https://media.api-sports.io/flags/bg.svg",
+    "season": 2022,
+    "round": "Northeast - 7"
+  },
+  "teams": {
+    "home": {
+      "id": 14222,
+      "name": "Ludogorets III",
+      "logo": "https://media.api-sports.io/football/teams/14222.png",
+      "winner": null
+    },
+    "away": {
+      "id": 8551,
+      "name": "Volov Shumen",
+      "logo": "https://media.api-sports.io/football/teams/8551.png",
+      "winner": null
+    }
+  },
+  "goals": {
+    "home": null,
+    "away": null
+  },
+  "score": {
+    "halftime": {
+      "home": null,
+      "away": null
+    },
+    "fulltime": {
+      "home": null,
+      "away": null
+    },
+    "extratime": {
+      "home": null,
+      "away": null
+    },
+    "penalty": {
+      "home": null,
+      "away": null
+    }
+  }
+}
