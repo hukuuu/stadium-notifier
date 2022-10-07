@@ -1,5 +1,5 @@
 import { envThrow } from './utils.ts'
-import { SmtpClient } from 'smtp'
+import { SmtpClient } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 
 type EmailProps = {
   from: string
