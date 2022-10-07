@@ -1,4 +1,4 @@
-import { sendEmail } from './mail.ts'
+import { sendEmail1 } from './mail.ts'
 import { findMatches, Fixture } from './matches.ts'
 import { format } from 'https://deno.land/std@0.91.0/datetime/mod.ts'
 import { envThrow } from './utils.ts'
@@ -20,7 +20,9 @@ serve(async (req: Request) => {
   if (theirSign !== mySign) return new Response('Unauthorized', { status: 401 })
 
   await doWork()
-  await createEvent(tomorrow())
+  console.log('fixme -- uncomment rescheduler')
+
+  // await createEvent(tomorrow())
 
   return new Response('', { status: 200 })
 })
@@ -33,8 +35,8 @@ const tomorrow = (): Date => {
   return d
 }
 
-const doWork = async () => {
-  return sendEmail({
+export const doWork = async () => {
+  return sendEmail1({
     from: email,
     to: email,
     subject: "Today's Matches!",
