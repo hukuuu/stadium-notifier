@@ -38,10 +38,8 @@ export const doWork = async () => {
 
   if (matchesOfInterest.length)
     return sendEmail1({
-      from: email,
       to: email,
       subject: "Today's Matches!",
-      content: 'not shown anywhere?',
       html: makeHtml(matchesOfInterest)
     })
 }

@@ -1,8 +1,6 @@
 {
   "imports": {
-    "smtp": "https://deno.land/x/smtp@v0.7.0/mod.ts",
     "datetime": "https://deno.land/std@0.91.0/datetime/mod.ts",
-    "hmac": "https://deno.land/x/hmac@v2.0.1/mod.ts",
-    "opine": "https://deno.land/x/opine@2.3.3/mod.ts"
+    "hmac": "https://deno.land/x/hmac@v2.0.1/mod.ts"
   }
 }
