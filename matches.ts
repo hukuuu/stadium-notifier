@@ -40,6 +40,7 @@ export type Fixture = {
   id: number
   date: string
   venue: string
+  venueId: number
   teams: string
 }
 const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
@@ -47,6 +48,7 @@ const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
   date: fixture.date,
   // venue: `${fixture.venue.name}(${fixture.venue.id})`,
   venue: fixture.venue.name,
+  venueId: fixture.venue.id,
   teams: teams.home.name + ' - ' + teams.away.name
 })
 
@@ -95,6 +97,15 @@ const getLeagues = async (): Promise<League[]> => {
 export const findMatches = async () => {
   const leagues = await getLeagues()
   const fixtures = await Promise.all(leagues.map(getFixtures))
-  // console.log(JSON.stringify(fixtures.flat(), null, 2))
-  return fixtures.flat()
+
+  const venuesOfInterest = [
+    288, // Stadion Balgarska Armia
+    1912 // Stadion Vasil Levski
+  ]
+
+  const fixturesOfInterest = fixtures
+    .flat()
+    .filter(f => venuesOfInterest.includes(f.venueId))
+
+  return fixturesOfInterest
 }

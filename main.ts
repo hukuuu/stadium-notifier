@@ -20,9 +20,7 @@ serve(async (req: Request) => {
   if (theirSign !== mySign) return new Response('Unauthorized', { status: 401 })
 
   await doWork()
-  console.log('fixme -- uncomment rescheduler')
-
-  // await createEvent(tomorrow())
+  await createEvent(tomorrow())
 
   return new Response('', { status: 200 })
 })
@@ -36,13 +34,16 @@ const tomorrow = (): Date => {
 }
 
 export const doWork = async () => {
-  return sendEmail1({
-    from: email,
-    to: email,
-    subject: "Today's Matches!",
-    content: 'not shown anywhere?',
-    html: makeHtml(await findMatches())
-  })
+  const matchesOfInterest = await findMatches()
+
+  if (matchesOfInterest.length)
+    return sendEmail1({
+      from: email,
+      to: email,
+      subject: "Today's Matches!",
+      content: 'not shown anywhere?',
+      html: makeHtml(matchesOfInterest)
+    })
 }
 
 const makeHtml = (fixtures: Fixture[]) => `
