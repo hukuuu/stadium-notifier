@@ -19,6 +19,7 @@ serve(async (req: Request) => {
   console.log(mySign)
   if (theirSign !== mySign) return new Response('Unauthorized', { status: 401 })
 
+  console.log(`Checking matches for ${new Date()}`)
   await doWork()
   await createEvent(tomorrow())
 
@@ -36,12 +37,16 @@ const tomorrow = (): Date => {
 export const doWork = async () => {
   const matchesOfInterest = await findMatches()
 
-  if (matchesOfInterest.length)
-    return sendEmail1({
-      to: email,
-      subject: "Today's Matches!",
-      html: makeHtml(matchesOfInterest)
-    })
+  if (!matchesOfInterest.length) {
+    console.log(`No matches of interest found`)
+    return
+  }
+
+  return sendEmail1({
+    to: email,
+    subject: "Today's Matches!",
+    html: makeHtml(matchesOfInterest)
+  })
 }
 
 const makeHtml = (fixtures: Fixture[]) => `
