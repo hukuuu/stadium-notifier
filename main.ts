@@ -53,10 +53,9 @@ const makeHtml = (fixtures: Fixture[]) => `
 <ol>
   ${fixtures.map(
     fixture =>
-      `<li><p>${fixture.teams}, ${fixture.venue} @${format(
-        new Date(fixture.date),
-        'HH:mm'
-      )}</p></li>`
+      `<li><p>${fixture.teams}, ${fixture.venue} @${new Date(
+        fixture.date
+      ).toLocaleTimeString('bg')}</p></li>`
   )}
 </ol>
 `
