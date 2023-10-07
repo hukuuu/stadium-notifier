@@ -90,12 +90,12 @@ const getLeagues = async (): Promise<League[]> => {
   const res = await fetch(`${url}/leagues${query(params)}`, {
     headers
   })
-  const leagues = (await res.json()).response.map(trimLeague)
-  return leagues
+  return (await res.json()).response.map(trimLeague)
 }
 
 export const findMatches = async () => {
   const leagues = await getLeagues()
+
   const fixtures = await Promise.all(leagues.map(getFixtures))
 
   const venuesOfInterest = [

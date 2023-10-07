@@ -1,26 +1,22 @@
-import { envThrow } from './utils.ts'
+export const schedule = async (kv: Deno.Kv, when: Date) => {
+  const now = Date.now()
+  const target = when.getTime()
+  if (target < now) throw new Error(`Cannot schedle for the past: ${when}`)
+  const delay = when.getTime() - Date.now()
+  console.log(`schedling in: ${delay}`)
+  await kv.enqueue('test', { delay })
+}
 
-const apiBaseUrl = 'https://app.jiter.dev/api'
+export const tomorrowMorning = (): Date => {
+  const d = new Date(Date.now() + 24 * 60 * 60 * 1000)
+  d.setUTCHours(5)
+  d.setUTCMinutes(30)
+  d.setUTCSeconds(0)
+  return d
+}
 
-const jiterApiKey = envThrow('JITER_API_KEY')
-const hookUrl = envThrow('HOOK_URL')
-
-export const createEvent = async (when: Date) => {
-  try {
-    const res = await fetch(`${apiBaseUrl}/events`, {
-      method: 'POST',
-      body: JSON.stringify({
-        destination: hookUrl,
-        scheduledTime: when,
-        payload: JSON.stringify({ foo: 'bar' })
-      }),
-      headers: { 'Content-Type': 'application/json', 'x-api-key': jiterApiKey }
-    })
-
-    const data = await res.text()
-
-    console.log('Event created 🎉', data)
-  } catch (error) {
-    console.log('Unable to create event', error)
-  }
+export const in5sec = (): Date => {
+  const d = new Date()
+  d.setSeconds(d.getSeconds() + 5)
+  return d
 }

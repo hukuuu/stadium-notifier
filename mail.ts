@@ -5,7 +5,7 @@ type EmailProps = {
   html: string
 }
 
-export const sendEmail1 = async (props: EmailProps) => {
+export const sendEmail = async (props: EmailProps) => {
   const url = 'https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send'
 
   const options = {
