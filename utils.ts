@@ -8,3 +8,12 @@ export const envThrow = (name: string): string => {
   console.log(`ENV: ${name} : ${value}`)
   return value
 }
+
+export const date = (d: Date) => {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const date = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${date}`
+}
+
+export const today = () => date(new Date())

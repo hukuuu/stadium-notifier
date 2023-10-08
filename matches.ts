@@ -1,4 +1,4 @@
-import { envThrow } from './utils.ts'
+import { envThrow, today } from './utils.ts'
 
 const url = 'https://api-football-v1.p.rapidapi.com/v3'
 const headers = {
@@ -11,15 +11,6 @@ const query = (obj: Record<string, string | number>) =>
   Object.entries(obj)
     .map(([k, v]) => `${k}=${v}`)
     .join('&')
-
-const date = (d: Date) => {
-  const year = d.getFullYear()
-  const month = String(d.getMonth() + 1).padStart(2, '0')
-  const date = String(d.getDate()).padStart(2, '0')
-  return `${year}-${month}-${date}`
-}
-
-const today = () => date(new Date())
 
 type ApiFixture = {
   fixture: {
