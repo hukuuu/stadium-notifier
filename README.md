@@ -1,6 +1,6 @@
 # Stadium Notifier
 
-Stadum Notifier finds football matches that will be played on specific stadiums every day and sends an email notification to the configured target email.
+Stadum Notifier finds football matches that will be played on specific stadiums every day and sends you a notification.
 
 ## Setup
 
@@ -9,11 +9,12 @@ Stadum Notifier finds football matches that will be played on specific stadiums 
 - [Deno](https://deno.com/)
 - [Deno Deploy](https://deno.com/deploy)
 - [RapidAPI](https://rapidapi.com/)
+- Telegram for notifications
 
 ### 2. Env variables
 
-- `EMAIL_USERNAME` - target email
-- `EMAIL_API_KEY` - X-RapidAPI-Key property in <https://rapidapi.com/sendgrid/api/sendgrid>
+- `TELEGRAM_API_TOKEN` - Telegram bot api token, see <https://core.telegram.org/bots/tutorial>
+- `CHAT_ID` - Telegram chat id - where to send messages
 - `MATCHES_API_KEY` - X-RapidAPI-Key property in <https://rapidapi.com/api-sports/api/api-football>
 
 ### 3. Deno Deploy setup
@@ -23,5 +24,6 @@ Create a new Deno Deploy project and link it to the main branch, main.ts file of
 ### 4. Local development
 
 ```sh
-EMAIL_USERNAME=xxx EMAIL_API_KEY=xxx MATCHES_API_KEY=xxx deno run -A --unstable main.ts
+
+TELEGRAM_API_TOKEN=xxx CHAT_ID=xxx MATCHES_API_KEY=xxx deno run -A --unstable main.ts
 ```
