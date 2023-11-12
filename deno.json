@@ -1,3 +1,6 @@
 {
-  "importMap": "import_map.json"
+  "imports": {
+    "datetime": "https://deno.land/std@0.91.0/datetime/mod.ts",
+    "hmac": "https://deno.land/x/hmac@v2.0.1/mod.ts"
+  }
 }

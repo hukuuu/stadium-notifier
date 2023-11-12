@@ -1,4 +1,4 @@
-import { envThrow, today } from './utils.ts'
+import { envThrow, date } from './utils.ts'
 
 const url = 'https://api-football-v1.p.rapidapi.com/v3'
 const headers = {
@@ -43,15 +43,16 @@ const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
   teams: teams.home.name + ' - ' + teams.away.name
 })
 
-const getFixtures = async (
-  league: Record<string, string | number>
-): Promise<Fixture[]> => {
-  const params = { ...league, date: today() }
+const getFixtures = async (league: League): Promise<Fixture[]> => {
+  const d = new Date()
+  d.setTime(d.getTime() - 24 * 60 * 60 * 1000)
+  console.log(`Getting matches for league ${league.league}, ${date(d)}`)
+
+  const params = { ...league, date: date(d) }
   const res = await fetch(`${url}/fixtures${query(params)}`, {
     headers
   })
   const fixtures = await res.json()
-
   return fixtures.response.map(trimFixture)
 }
 
@@ -85,8 +86,14 @@ const getLeagues = async (): Promise<League[]> => {
 }
 
 export const findMatches = async () => {
-  const leagues = await getLeagues()
-
+  const leaguesOfInterest = [
+    174, //Cup
+    172, //First League
+    656 //Supercup
+  ]
+  const leagues = (await getLeagues()).filter(league =>
+    leaguesOfInterest.includes(league.league)
+  )
   const fixtures = await Promise.all(leagues.map(getFixtures))
 
   const venuesOfInterest = [

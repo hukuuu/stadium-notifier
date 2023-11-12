@@ -1,3 +1,3 @@
-import { doWork } from './main.ts'
+import { findAndNotify } from "./stadium-notifier.ts"
 
-doWork()
+findAndNotify()

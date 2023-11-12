@@ -23,6 +23,12 @@ export const sendEmail = async (props: EmailProps) => {
   }
 
   const res = await fetch(url, options)
-  const body = await res.text()
-  console.log(body)
+  console.log(res)
+
+  if (res.ok) {
+    console.log(`Email sent successfully!`)
+    console.log('body')
+
+    console.log(await res.text())
+  }
 }
