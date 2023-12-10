@@ -1,3 +1,4 @@
+import { Api, ApiLeague, League, Fixture } from './types.ts'
 import { envThrow, date } from './utils.ts'
 
 const url = 'https://api-football-v1.p.rapidapi.com/v3'
@@ -12,29 +13,7 @@ const query = (obj: Record<string, string | number>) =>
     .map(([k, v]) => `${k}=${v}`)
     .join('&')
 
-type ApiFixture = {
-  fixture: {
-    id: number
-    date: string
-    venue: {
-      name: string
-      id: number
-    }
-  }
-  teams: {
-    home: { name: string }
-    away: { name: string }
-  }
-}
-
-export type Fixture = {
-  id: number
-  date: string
-  venue: string
-  venueId: number
-  teams: string
-}
-const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
+const trimFixture = ({ fixture, teams }: Api): Fixture => ({
   id: fixture.id,
   date: fixture.date,
   // venue: `${fixture.venue.name}(${fixture.venue.id})`,
@@ -48,27 +27,14 @@ const getFixtures = async (league: League): Promise<Fixture[]> => {
   console.log(`Getting matches for league ${league.league}, ${date(d)}`)
 
   const params = { ...league, date: date(d) }
+  console.log(`${url}/fixtures${query(params)}`)
   const res = await fetch(`${url}/fixtures${query(params)}`, {
     headers
   })
-  const fixtures = await res.json()
-  return fixtures.response.map(trimFixture)
+  
+  return (await res.json()).response.map(Api.parse).map(trimFixture)
 }
 
-type ApiLeague = {
-  league: {
-    id: number
-  }
-  seasons: {
-    current: boolean
-    year: number
-  }[]
-}
-
-type League = {
-  league: number
-  season: number
-}
 const trimLeague = (league: ApiLeague): League => ({
   league: league.league.id,
   season: league.seasons.find(s => s.current)!.year
@@ -81,7 +47,7 @@ const getLeagues = async (): Promise<League[]> => {
   const res = await fetch(`${url}/leagues${query(params)}`, {
     headers
   })
-  return (await res.json()).response.map(trimLeague)
+  return (await res.json()).response.map(ApiLeague.parse).map(trimLeague)
 }
 
 export const findMatches = async () => {
