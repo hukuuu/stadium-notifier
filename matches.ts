@@ -45,7 +45,6 @@ const trimFixture = ({ fixture, teams }: ApiFixture): Fixture => ({
 
 const getFixtures = async (league: League): Promise<Fixture[]> => {
   const d = new Date()
-  d.setTime(d.getTime() - 24 * 60 * 60 * 1000)
   console.log(`Getting matches for league ${league.league}, ${date(d)}`)
 
   const params = { ...league, date: date(d) }
